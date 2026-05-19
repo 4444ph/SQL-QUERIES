@@ -9,32 +9,32 @@
       {
         "name": "DashboardAccountManager",
         "schemaName": "public",
-        "x": 9,
-        "y": -17
+        "x": -16,
+        "y": -8
       },
       {
         "name": "login_logs",
         "schemaName": "public",
-        "x": 385.1839868214584,
-        "y": -48
+        "x": 385.18398682145846,
+        "y": -40
       },
       {
         "name": "CementForecastSales",
         "schemaName": "public",
-        "x": 384.0719476979585,
-        "y": 207.35687260746153
+        "x": 392,
+        "y": 216
       },
       {
         "name": "access_logs",
         "schemaName": "public",
-        "x": -432,
-        "y": -48
+        "x": -392,
+        "y": -32
       },
       {
         "name": "admin_actions_log",
         "schemaName": "public",
-        "x": -458.13362826083085,
-        "y": 192
+        "x": -432,
+        "y": 216
       }
     ],
     "tableGroupCollapseStates": [],
@@ -184,6 +184,21 @@
         "firstRelation": "*",
         "secondFieldNames": [
           "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "AdminUsername"
+        ],
+        "firstTableName": "admin_actions_log",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Username"
         ],
         "secondTableName": "DashboardAccountManager",
         "secondSchemaName": "public",

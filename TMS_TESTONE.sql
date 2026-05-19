@@ -432,7 +432,7 @@ SELECT
     
 FROM [TMS_APP].[dbo].[BULK_RECORD];
 
---TMS V2
+--TMS_TRAILER V2
 
 SELECT 
 lu.locationName as assignment,
@@ -446,3 +446,63 @@ LEFT JOIN TMS_app.dbo.tbl_LocationUnit lu
 
 LEFT JOIN TMS_app.dbo.tbl_GroupUnit gu
     ON tt._crcc8_groupname_value = gu.crcc8_tbl_groupunitid
+
+--TMS_TRAILER V2.5
+
+SELECT 
+       tt.[body_number]
+      ,tt.[plante_number]
+      ,tt.[chassis_number]
+      ,lu.locationName as assignment
+      ,gu.groupName as bu
+      ,tt.[fleet_group]
+      ,tt.[or_date]
+      ,tt.[cr_date]
+      ,tt.[remarks]
+      ,tt.[or_cr_name]
+      ,tt.[mv_file_number]
+      ,tp.TrailerType as trailer_type
+      ,tt.[status]
+      ,tt.[plate_ending_number]
+      ,tt.[year_model]
+      ,tt.[assigned]
+
+
+      --INSURANCE
+      ,tt.[tpl_name]
+      ,tt.[tpl_number]
+      ,tt.[tpl_exp_date]
+
+      ,tt.[compre_name]
+      ,tt.[compre_number]
+      ,tt.[compre_exp_date]
+      ,tt.[deductible_base]
+      ,tt.[suminsured]
+      --BANK
+      ,tt.[bank]
+      ,tt.[bank_due]    
+
+      --LTFRB
+      ,tt.[ltfrb_number]
+      ,tt.[ltfrb_status]
+      ,tt.[ltfrb_exp_date]
+      --MISC
+      ,tt.[idle]
+
+      ,tt.[created_on]
+      ,tt.[modified_on]
+      ,tt.[stencil]
+      ,tt.[deploy]
+      ,tt.[status_code]
+      ,tt.[state_code]
+
+  FROM [WILLOWTestDB].[dbo].[TMS_TRAILER] tt
+
+  LEFT JOIN TMS_app.dbo.tbl_LocationUnit lu 
+    ON tt._crcc8_locationname_value = lu.crcc8_tbl_locationunitid
+
+  LEFT JOIN TMS_app.dbo.tbl_GroupUnit gu
+    ON tt._crcc8_groupname_value = gu.crcc8_tbl_groupunitid
+
+  LEFT JOIN TMS_APP.dbo.sr_truckpairs tp
+	ON tp.TrailerBodyNumber = tt.body_number

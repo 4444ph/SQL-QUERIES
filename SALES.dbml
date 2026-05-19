@@ -31,6 +31,7 @@ Table access_logs as al{
 Table admin_actions_log as aa {
   action_Id int [pk, increment, not null]
   AdminUserId int [not null]
+  AdminUsername nvarchar(50) [not null] // Redundant but useful for quick reference
   TargetUserId int [null] // The user account that was created/modified
   ActionTime datetime2(0) [default: `now()`, not null]
   ActionDescription nvarchar(255) [not null]
@@ -68,3 +69,5 @@ Ref: aa.AdminUserId > dam.Id
 
 // Relationship 2: Who the action was done to (The Target User)
 Ref: aa.TargetUserId > dam.Id
+
+Ref: aa.AdminUsername > dam.Username
