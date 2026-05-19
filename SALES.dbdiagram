@@ -1,0 +1,196 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": true,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "DashboardAccountManager",
+        "schemaName": "public",
+        "x": 9,
+        "y": -17
+      },
+      {
+        "name": "login_logs",
+        "schemaName": "public",
+        "x": 385.1839868214584,
+        "y": -48
+      },
+      {
+        "name": "CementForecastSales",
+        "schemaName": "public",
+        "x": 384.0719476979585,
+        "y": 207.35687260746153
+      },
+      {
+        "name": "access_logs",
+        "schemaName": "public",
+        "x": -432,
+        "y": -48
+      },
+      {
+        "name": "admin_actions_log",
+        "schemaName": "public",
+        "x": -458.13362826083085,
+        "y": 192
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "UserId"
+        ],
+        "firstTableName": "login_logs",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "UserId"
+        ],
+        "firstTableName": "CementForecastSales",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "Asm"
+        ],
+        "firstTableName": "DashboardAccountManager",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "ASM"
+        ],
+        "secondTableName": "CementForecastSales",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "UserId"
+        ],
+        "firstTableName": "access_logs",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "AdminUserId"
+        ],
+        "firstTableName": "admin_actions",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "AdminUserId"
+        ],
+        "firstTableName": "admin_actions_",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "AdminUserId"
+        ],
+        "firstTableName": "admin_actions_l",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "AdminUserId"
+        ],
+        "firstTableName": "admin_actions_lo",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "AdminUserId"
+        ],
+        "firstTableName": "admin_actions_log",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "TargetUserId"
+        ],
+        "firstTableName": "admin_actions_log",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}

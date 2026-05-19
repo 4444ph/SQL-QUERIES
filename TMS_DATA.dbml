@@ -1,0 +1,90 @@
+Table Truck as tr {
+  truck_Id int [unique, not null]
+  head varchar(15) [pk, unique, not null]
+  brand varchar(20)
+  plate_no varchar(20)
+  bu_id int
+  assignment_Id int
+  //paired_trailer varchar(20)//ID NG TRAILER
+  status_id int [ref: - us.status_Id]
+}
+
+Table Trailer as trl {
+  trailer_Id int [unique, not null]
+  Trailer varchar(15) [pk, unique, not null]
+  Classification varchar(20)
+  axle_Id int
+  sub_engine varchar(10)//OR BIT: DATA IS YES OR NO
+  bu_id int
+  plate_no varchar(20)  
+  assignment_Id int
+  //paired_truck varchar(20)//ID NG TRUCK
+}
+
+Table vw_paired_trucks as pt {
+  paired_truck_Id int [unique, not null]
+  truck_Id int
+  trailer_Id int
+  //bu_id int
+  //assignment_Id int
+  date_paired datetime2(0) [default: 'GETDATE()']
+  date_unpaired datetime2(0)
+} 
+
+Table trailer_axle as ax {
+  axle_Id int [pk, unique, not null]
+  trailer_Id int
+  axle_number int
+}
+
+Table business_unit as bu {
+  business_unit_Id int [pk, unique, not null]
+  business_unit_name varchar(20)
+}
+
+Table assignment as ass {
+  assignment_Id int [pk, unique, not null]
+  assignment_name varchar(20)
+}
+
+Table unit_status as us {
+  status_Id int [pk, unique, not null]
+  status_name varchar(50)
+  
+}
+
+// Relationships
+  /**SQL EQUIVALENT
+    LEFT JOIN vw_paired_trailer pt
+      ON trl.trailer_Id = pt.trailer_Id
+
+    LEFT JOIN Trucks tr
+      ON tr.truck_Id = pt.truck_id **/
+Ref: trl.trailer_Id - pt.trailer_Id
+Ref: tr.truck_Id - pt.truck_Id
+
+Ref: ax.axle_Id - trl.axle_Id
+
+Ref: tr.bu_id - bu.business_unit_Id
+Ref: trl.bu_id - bu.business_unit_Id
+
+Ref: tr.assignment_Id - ass.assignment_Id
+Ref: trl.assignment_Id - ass.assignment_Id
+
+
+/**
+status
+5 = rental
+8 = joint ventures
+1 = condemn
+2 = sold
+0 = running
+4 = available
+12 = unassigned
+3 = others
+9 = N/A
+7 = Old Unit In Ic
+6 = under
+11 = SOLD WITH TERMS
+10 = old unit
+**/

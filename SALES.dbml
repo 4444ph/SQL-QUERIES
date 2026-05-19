@@ -1,0 +1,70 @@
+Table DashboardAccountManager as dam {
+  Id int [pk, increment, not null, unique]
+    Firstname nvarchar(100) [not null]
+    Lastname nvarchar(100) [not null]
+    Username nvarchar(50) [not null, unique]
+    Password nvarchar(max) [not null] // Stored as MAX to accommodate hashed strings
+    Email nvarchar(255) [not null, unique]
+    Role nvarchar(50) [default: 'User']
+  CreatedAt datetime2(0) [default: 'GETDATE()']
+  ModifiedAt datetime2(0)
+  Asm nvarchar(20)
+  cement bit [default: 0]
+  cargo bit [default: 0]
+  sales bit [default: 0]
+}
+
+Table login_logs as ll {
+  log_Id int [pk, increment, not null]
+  UserId int [not null]
+  LoginTime datetime2(0) [default: 'GETDATE()', not null]
+  LogoutTime datetime2(0)
+}
+
+Table access_logs as al{
+  al_Id int [pk, increment, not null]
+  UserId int [not null]
+  AccessTime datetime2(0) [default: 'GETDATE()', not null]
+  PageAccessed nvarchar(255) [not null]
+}
+
+Table admin_actions_log as aa {
+  action_Id int [pk, increment, not null]
+  AdminUserId int [not null]
+  TargetUserId int [null] // The user account that was created/modified
+  ActionTime datetime2(0) [default: `now()`, not null]
+  ActionDescription nvarchar(255) [not null]
+}
+
+Table CementForecastSales as CFS{
+  UserId int [not null]
+  ForecastID int [pk, increment, not null]
+    ASM nvarchar(20) 
+    ClientName nvarchar(200)
+    DeliveryType nvarchar(50)
+    CementBrand nvarchar(100)
+    Forecast decimal(12, 0)
+    TotalTrips int [default: 0]
+    TotalQTYDelivered decimal(12, 0) [default: 0]
+    TotalQTYWithdrawn decimal(12, 0) [default: 0]
+    CementType nvarchar(50)
+    Destination nvarchar(255)
+    Remarks nvarchar(MAX) // PAKI ADD MAMAYA
+    CreatedDate datetime [default: 'GETDATE()']
+    ModifiedDate datetime(0)
+}
+
+//Relationships
+Ref: ll.UserId > dam.Id
+
+Ref: CFS.UserId - dam.Id
+
+Ref: dam.Asm < CFS.ASM
+
+Ref: al.UserId > dam.Id
+
+// Relationship 1: Who performed the action (The Admin)
+Ref: aa.AdminUserId > dam.Id
+
+// Relationship 2: Who the action was done to (The Target User)
+Ref: aa.TargetUserId > dam.Id

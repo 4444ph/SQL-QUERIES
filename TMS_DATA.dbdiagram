@@ -1,0 +1,188 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": true,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "Truck",
+        "schemaName": "public",
+        "x": 245.91392105777004,
+        "y": -377.5784704949865
+      },
+      {
+        "name": "Trailer",
+        "schemaName": "public",
+        "x": 240,
+        "y": -8
+      },
+      {
+        "name": "vw_paired_trucks",
+        "schemaName": "public",
+        "x": 592,
+        "y": -72
+      },
+      {
+        "name": "trailer_axle",
+        "schemaName": "public",
+        "x": -39.91519719667842,
+        "y": 88
+      },
+      {
+        "name": "business_unit",
+        "schemaName": "public",
+        "x": 618.9830407934883,
+        "y": -249.6753084222292
+      },
+      {
+        "name": "assignment",
+        "schemaName": "public",
+        "x": -88,
+        "y": -218.4924954923019
+      },
+      {
+        "name": "unit_status",
+        "schemaName": "public",
+        "x": -63.872795795017645,
+        "y": -72
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "status_Id"
+        ],
+        "firstTableName": "unit_status",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "status_id"
+        ],
+        "secondTableName": "Truck",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": [
+          {
+            "x": 225.91392105777004,
+            "y": -24
+          }
+        ]
+      },
+      {
+        "firstFieldNames": [
+          "trailer_Id"
+        ],
+        "firstTableName": "Trailer",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "trailer_Id"
+        ],
+        "secondTableName": "vw_paired_trucks",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "truck_Id"
+        ],
+        "firstTableName": "Truck",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "truck_Id"
+        ],
+        "secondTableName": "vw_paired_trucks",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": [
+          {
+            "x": 572,
+            "y": -329.5784704949865
+          }
+        ]
+      },
+      {
+        "firstFieldNames": [
+          "axle_Id"
+        ],
+        "firstTableName": "trailer_axle",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "axle_Id"
+        ],
+        "secondTableName": "Trailer",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "bu_id"
+        ],
+        "firstTableName": "Truck",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "business_unit_Id"
+        ],
+        "secondTableName": "business_unit",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "bu_id"
+        ],
+        "firstTableName": "Trailer",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "business_unit_Id"
+        ],
+        "secondTableName": "business_unit",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "assignment_Id"
+        ],
+        "firstTableName": "Truck",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "assignment_Id"
+        ],
+        "secondTableName": "assignment",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "assignment_Id"
+        ],
+        "firstTableName": "Trailer",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "assignment_Id"
+        ],
+        "secondTableName": "assignment",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}
