@@ -537,3 +537,11 @@ EXEC sp_add_jobserver
     @job_name = N'Capture Server IO Stats'
 GO
 
+CREATE TABLE user_action_log (
+    user_action_Id INT IDENTITY(1,1) NOT NULL,
+    UserId INT NOT NULL,
+    ActionTime DATETIME2(0) DEFAULT GETDATE() NOT NULL,
+    ActionDescription NVARCHAR(255) NOT NULL,
+    
+    CONSTRAINT PK_user_action_log PRIMARY KEY CLUSTERED (user_action_Id)
+);

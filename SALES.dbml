@@ -19,6 +19,8 @@ Table login_logs as ll {
   UserId int [not null]
   LoginTime datetime2(0) [default: 'GETDATE()', not null]
   LogoutTime datetime2(0)
+  AccessTime datetime2(0) [default: 'GETDATE()', not null]
+  PageAccessed nvarchar(255) [not null]
 }
 
 Table access_logs as al{
@@ -34,6 +36,13 @@ Table admin_actions_log as aa {
   AdminUsername nvarchar(50) [not null] // Redundant but useful for quick reference
   TargetUserId int [null] // The user account that was created/modified
   ActionTime datetime2(0) [default: `now()`, not null]
+  ActionDescription nvarchar(255) [not null]
+}
+
+Table user_action_log as aal {
+  user_action_Id int [pk, increment, not null]
+  UserId int [not null]
+  ActionTime datetime2(0) [default: 'GETDATE()', not null]
   ActionDescription nvarchar(255) [not null]
 }
 
@@ -71,3 +80,5 @@ Ref: aa.AdminUserId > dam.Id
 Ref: aa.TargetUserId > dam.Id
 
 Ref: aa.AdminUsername > dam.Username
+
+Ref: aal.UserId > dam.Id

@@ -21,8 +21,8 @@
       {
         "name": "CementForecastSales",
         "schemaName": "public",
-        "x": 392,
-        "y": 216
+        "x": 385.2965726596942,
+        "y": 328
       },
       {
         "name": "access_logs",
@@ -35,6 +35,12 @@
         "schemaName": "public",
         "x": -432,
         "y": 216
+      },
+      {
+        "name": "user_action_log",
+        "schemaName": "public",
+        "x": 385.87580624081585,
+        "y": -256
       }
     ],
     "tableGroupCollapseStates": [],
@@ -199,6 +205,21 @@
         "firstRelation": "*",
         "secondFieldNames": [
           "Username"
+        ],
+        "secondTableName": "DashboardAccountManager",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "UserId"
+        ],
+        "firstTableName": "user_action_log",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "Id"
         ],
         "secondTableName": "DashboardAccountManager",
         "secondSchemaName": "public",

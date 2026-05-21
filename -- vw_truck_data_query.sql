@@ -300,90 +300,6 @@ AND Team = 'SBUO-1A'
 GO
 
 
---BACKUP
-
-        -- URStatus
-CASE 
-    -- 1. HIGHEST PRIORITY: The Rescue Override
-    -- This ensures that if it's a Rescue, we don't care about Category yet
-    WHEN jr.Location LIKE '%Rescue%' THEN
-        CASE 
-            WHEN jr.Jrstatus = 'Pending'
-            AND jr.Requeststatus = 'Pending Acceptance' THEN 'FOR RESC'
-            WHEN jr.Jrstatus <> 'Pending' AND jr.Jrstatus <> 'Done' THEN 'ON RESC'
-            ELSE 'RESCUE-CHECK' -- Fallback for other rescue states
-        END
-
-    -- 2. SECOND PRIORITY: Static Units
-    WHEN osv.Category IN ('IDLE', 'AVAILABLE', 'PRELOADED') THEN
-        CASE
-            WHEN UPPER(ISNULL(jo.Remarks,'')) LIKE '%WAITING FOR PARTS%' THEN 'WFP'
-            WHEN ISNULL(jr.Jrnumber, '') = '' OR jr.Jrnumber = '-' THEN osv.Category
-            WHEN jr.Jrstatus <> 'Pending' THEN
-                CASE
-                    WHEN jr.Jrstatus <> 'Done' THEN 'ON GOING'
-                    ELSE 'NOT RELEASED'
-                END
-            ELSE 'APPROVED'
-        END
-
-    -- 3. THIRD PRIORITY: Active Trips
-    WHEN osv.Category = 'ON TRIP' THEN 'ON TRIP'
-
-    -- 4. FALLBACK
-    ELSE 'IDLE'
-END AS URStatus,
-
-CASE
-    -- OUTER IF: Matches your IF(REGEXMATCH(AC2:AC, "IDLE|AVAILABLE|PRELOADED"))
-    WHEN osv.Category IN ('IDLE', 'AVAILABLE', 'PRELOADED') 
-    THEN
-        CASE
-            -- 1st IFS Condition: H2:H = "Pending Acceptance"
-            WHEN jr.Requeststatus = 'Pending Acceptance' 
-            THEN 
-                CASE 
-                    WHEN jr.Location LIKE '%Rescue%' THEN 'FOR RESC'
-                    -- Matches your IF(T2:T="", "OUTSIDE", "AT YARD")
-                    WHEN ISNULL(ym.YardCode, '') = '' THEN 'OUTSIDE'
-                    ELSE 'AT YARD'
-                END
-
-            -- 2nd IFS Condition: REGEXMATCH(UPPER(AE2:AE), "WAITING FOR PARTS")
-            WHEN UPPER(ISNULL(jo.Remarks, '')) LIKE '%WAITING FOR PARTS%' 
-            THEN 'WFP'
-
-            -- 3rd IFS Condition: F2:F = "-"
-            WHEN ISNULL(jr.Jrnumber, '') = '-' 
-            THEN osv.Category
-
-            -- 4th IFS Condition: F2:F <> "" (Has a JR Number)
-            WHEN ISNULL(jr.Jrnumber, '') <> '' 
-            THEN
-                CASE
-                    -- Matches IF(G2:G <> "Pending")
-                    WHEN jr.Jrstatus <> 'Pending' 
-                    THEN
-                        CASE
-                            WHEN jr.Location LIKE '%Rescue%' THEN 'ON RESC'
-                            WHEN jr.Jrstatus LIKE '%On going%'       THEN 'ON GOING'
-                            ELSE                                  'NOT RELEASED'
-                        END
-                    ELSE 'APPROVED'
-                END
-
-            -- Fallback for the inner IFS
-            ELSE osv.Category 
-        END
-
-    -- OUTER ELSE: Matches your final ,"ON TRIP"
-    WHEN osv.Category = 'ON TRIP' THEN 'ON TRIP'
-    
-    -- Final Fallback
-    ELSE 'IDLE' 
-END AS URStatusTEST,
-
-
 
 ALTER VIEW [dbo].[vw_Truck_Data_Cement_Cargo] AS
 
@@ -732,7 +648,7 @@ Order by Id asc;
 
 --NEW TRUCK DATA \ ACCURATE
 
-create view cement_truck_data as 
+--create view cement_truck_data as 
 
 WITH ranked_jo AS (
     SELECT
