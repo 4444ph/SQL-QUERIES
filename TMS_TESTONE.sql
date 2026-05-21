@@ -506,3 +506,328 @@ SELECT
 
   LEFT JOIN TMS_APP.dbo.sr_truckpairs tp
 	ON tp.TrailerBodyNumber = tt.body_number
+
+--NEW APPROACH UNION ALL WILL NOT WORK
+
+USE [WILLOWTestDB]
+GO
+
+-- ============================================================
+-- HELPER: reusable string-cleaning pattern applied inline
+-- TRIM + CHAR(160) removal + NULL for empty/N/A values
+-- ============================================================
+
+CREATE VIEW [dbo].[TMS_FLATBED] AS
+SELECT
+    -- NUMERICS
+    CAST(TRY_CAST(NULLIF([endingnumber],       '') AS FLOAT) AS INT)    AS [plate_ending_number],
+    CAST(TRY_CAST(NULLIF([Deductible (Base)],  '') AS FLOAT) AS INT)    AS [deductible_base],
+
+    -- STRINGS
+    NULLIF(TRIM(REPLACE([Plate Number],                 CHAR(160), '')), 'N/A')  AS [plate_number],
+    NULLIF(TRIM(REPLACE([Assigned],                     CHAR(160), '')), 'N/A')  AS [assigned],
+    NULLIF(TRIM(REPLACE([ltfrbstatus],                  CHAR(160), '')), 'N/A')  AS [ltfrb_status],
+    NULLIF(TRIM(REPLACE([_crcc8_locationname_value],    CHAR(160), '')), 'N/A')  AS [location_name_value],
+    NULLIF(TRIM(REPLACE([tplnumber],                    CHAR(160), '')), 'N/A')  AS [tpl_number],
+    NULLIF(TRIM(REPLACE([mvfilenumber],                 CHAR(160), '')), 'N/A')  AS [mv_file_number],
+    NULLIF(TRIM(REPLACE([tplname],                      CHAR(160), '')), 'N/A')  AS [tpl_name],
+    NULLIF(TRIM(REPLACE([Body Number],                  CHAR(160), '')), 'N/A')  AS [body_number],
+    NULLIF(TRIM(REPLACE([orcrname],                     CHAR(160), '')), 'N/A')  AS [or_cr_name],
+    NULLIF(TRIM(REPLACE([remarks],                      CHAR(160), '')), 'N/A')  AS [remarks],
+    NULLIF(TRIM(REPLACE([Deployed],                     CHAR(160), '')), 'N/A')  AS [deploy],
+    NULLIF(TRIM(REPLACE([chassisnumber],                CHAR(160), '')), 'N/A')  AS [chassis_number],
+    NULLIF(TRIM(REPLACE([ltfrbnumber],                  CHAR(160), '')), 'N/A')  AS [ltfrb_number],
+    NULLIF(TRIM(REPLACE([_crcc8_groupname_value],       CHAR(160), '')), 'N/A')  AS [group_name_value],
+    NULLIF(TRIM(REPLACE([flatbedfleet],                 CHAR(160), '')), 'N/A')  AS [fleet_group],
+    NULLIF(TRIM(REPLACE([bank],                         CHAR(160), '')), 'N/A')  AS [bank],
+    NULLIF(TRIM(REPLACE([comprenumber],                 CHAR(160), '')), 'N/A')  AS [compre_number],
+    NULLIF(TRIM(REPLACE([comprename],                   CHAR(160), '')), 'N/A')  AS [compre_name],
+    NULLIF(TRIM(REPLACE([crcc8_flatbedrecordid],        CHAR(160), '')), 'N/A')  AS [record_id],
+
+    -- NUMERICS
+    CAST(TRY_CAST(NULLIF([suminsured],  '') AS FLOAT) AS INT)           AS [sum_insured],
+    CAST(TRY_CAST(NULLIF([Idle],        '') AS FLOAT) AS INT)           AS [idle],
+    CAST(TRY_CAST(NULLIF([yearmodel],   '') AS FLOAT) AS INT)           AS [year_model],
+    CAST(TRY_CAST(NULLIF([statuscode],  '') AS FLOAT) AS INT)           AS [status_code],
+    CAST(TRY_CAST(NULLIF([status],      '') AS FLOAT) AS INT)           AS [status],
+
+    -- DATES
+    NULLIF(TRY_CAST([compreexpdate] AS DATE), '1900-01-01')             AS [compre_exp_date],
+    NULLIF(TRY_CAST([ordate]        AS DATE), '1900-01-01')             AS [or_date],
+    NULLIF(TRY_CAST([crdate]        AS DATE), '1900-01-01')             AS [cr_date],
+    NULLIF(TRY_CAST([bankdue]       AS DATE), '1900-01-01')             AS [bank_due],
+    NULLIF(TRY_CAST([tplexpdate]    AS DATE), '1900-01-01')             AS [tpl_exp_date],
+    NULLIF(TRY_CAST([ltfrbexpdate]  AS DATE), '1900-01-01')             AS [ltfrb_exp_date],
+    NULLIF(TRY_CAST([createdon]     AS DATE), '1900-01-01')             AS [created_on],
+
+    -- DATETIME
+    NULLIF(TRY_CAST([modifiedon] AS DATETIME2(0)), '1900-01-01 00:00:00') AS [modified_on],
+
+    -- BIT
+    CAST(CAST(TRY_CAST(NULLIF([stencil],   '') AS FLOAT) AS INT) AS BIT)        AS [stencil],
+    ISNULL(CAST(CAST(TRY_CAST(NULLIF([statecode], '') AS FLOAT) AS INT) AS BIT), 0) AS [state_code],
+
+    -- FLATBED-ONLY: NULL placeholders for BULK-only columns
+    CAST(NULL AS NVARCHAR(100))                                         AS [subengine],
+    CAST(NULL AS INT)                                                   AS [axle]
+
+FROM [TMS_APP].[dbo].[FLATBED_RECORD]
+GO
+
+-- ============================================================
+
+CREATE VIEW [dbo].[TMS_BULK] AS
+SELECT
+    -- NUMERICS
+    CAST(TRY_CAST(NULLIF([endingnumber],       '') AS FLOAT) AS INT)    AS [plate_ending_number],
+    CAST(TRY_CAST(NULLIF([Deductible (Base)],  '') AS FLOAT) AS INT)    AS [deductible_base],
+
+    -- STRINGS
+    NULLIF(TRIM(REPLACE([Plate Number],                 CHAR(160), '')), 'N/A')  AS [plate_number],
+    NULLIF(TRIM(REPLACE([Assigned],                     CHAR(160), '')), 'N/A')  AS [assigned],
+    NULLIF(TRIM(REPLACE([ltfrbstatus],                  CHAR(160), '')), 'N/A')  AS [ltfrb_status],
+    NULLIF(TRIM(REPLACE([_crcc8_locationname_value],    CHAR(160), '')), 'N/A')  AS [location_name_value],
+    NULLIF(TRIM(REPLACE([tplnumber],                    CHAR(160), '')), 'N/A')  AS [tpl_number],
+    NULLIF(TRIM(REPLACE([mvfilenumber],                 CHAR(160), '')), 'N/A')  AS [mv_file_number],
+    NULLIF(TRIM(REPLACE([tplname],                      CHAR(160), '')), 'N/A')  AS [tpl_name],
+    NULLIF(TRIM(REPLACE([Body Number],                  CHAR(160), '')), 'N/A')  AS [body_number],
+    NULLIF(TRIM(REPLACE([orcrname],                     CHAR(160), '')), 'N/A')  AS [or_cr_name],
+    NULLIF(TRIM(REPLACE([remarks],                      CHAR(160), '')), 'N/A')  AS [remarks],
+    NULLIF(TRIM(REPLACE([Deployed],                     CHAR(160), '')), 'N/A')  AS [deploy],
+    NULLIF(TRIM(REPLACE([chassisnumber],                CHAR(160), '')), 'N/A')  AS [chassis_number],
+    NULLIF(TRIM(REPLACE([ltfrbnumber],                  CHAR(160), '')), 'N/A')  AS [ltfrb_number],
+    NULLIF(TRIM(REPLACE([_crcc8_groupname_value],       CHAR(160), '')), 'N/A')  AS [group_name_value],
+    NULLIF(TRIM(REPLACE([fleet],                        CHAR(160), '')), 'N/A')  AS [fleet_group],
+    NULLIF(TRIM(REPLACE([bank],                         CHAR(160), '')), 'N/A')  AS [bank],
+    NULLIF(TRIM(REPLACE([comprenumber],                 CHAR(160), '')), 'N/A')  AS [compre_number],
+    NULLIF(TRIM(REPLACE([comprename],                   CHAR(160), '')), 'N/A')  AS [compre_name],
+    NULLIF(TRIM(REPLACE([crcc8_bulkrecordid],           CHAR(160), '')), 'N/A')  AS [record_id],
+
+    -- NUMERICS
+    CAST(TRY_CAST(NULLIF([suminsured],  '') AS FLOAT) AS INT)           AS [sum_insured],
+    CAST(TRY_CAST(NULLIF([Idle],        '') AS FLOAT) AS INT)           AS [idle],
+    CAST(TRY_CAST(NULLIF([yearmodel],   '') AS FLOAT) AS INT)           AS [year_model],
+    CAST(TRY_CAST(NULLIF([statuscode],  '') AS FLOAT) AS INT)           AS [status_code],
+    CAST(TRY_CAST(NULLIF([status],      '') AS FLOAT) AS INT)           AS [status],
+
+    -- DATES
+    NULLIF(TRY_CAST([compreexpdate] AS DATE), '1900-01-01')             AS [compre_exp_date],
+    NULLIF(TRY_CAST([ordate]        AS DATE), '1900-01-01')             AS [or_date],
+    NULLIF(TRY_CAST([crdate]        AS DATE), '1900-01-01')             AS [cr_date],
+    NULLIF(TRY_CAST([bankdue]       AS DATE), '1900-01-01')             AS [bank_due],
+    NULLIF(TRY_CAST([tplexpdate]    AS DATE), '1900-01-01')             AS [tpl_exp_date],
+    NULLIF(TRY_CAST([ltfrbexpdate]  AS DATE), '1900-01-01')             AS [ltfrb_exp_date],
+    NULLIF(TRY_CAST([createdon]     AS DATE), '1900-01-01')             AS [created_on],
+
+    -- DATETIME
+    NULLIF(TRY_CAST([modifiedon] AS DATETIME2(0)), '1900-01-01 00:00:00') AS [modified_on],
+
+    -- BIT
+    CAST(CAST(TRY_CAST(NULLIF([stencil],   '') AS FLOAT) AS INT) AS BIT)        AS [stencil],
+    ISNULL(CAST(CAST(TRY_CAST(NULLIF([statecode], '') AS FLOAT) AS INT) AS BIT), 0) AS [state_code],
+
+    -- BULK-ONLY columns
+    NULLIF(TRIM(REPLACE([subengine], CHAR(160), '')), 'N/A')            AS [subengine],
+    CAST(TRY_CAST(NULLIF([Axle], '') AS FLOAT) AS INT)                  AS [axle]
+
+FROM [TMS_APP].[dbo].[BULK_RECORD]
+GO
+
+--NEW tms_flatbed
+
+--ALTER VIEW [dbo].[tms_flatbed] AS
+
+SELECT 
+    -- NUMERICS
+    CAST(TRY_CAST(NULLIF(fb.[endingnumber], '') AS FLOAT) AS INT) AS [plate_ending_number],
+    CAST(TRY_CAST(NULLIF(fb.[Deductible (Base)], '') AS FLOAT) AS INT) AS [deductible_base],
+    
+    -- STRINGS: Your updated CASE mapping + invisible character safeguard
+    CAST(CASE WHEN TRIM(REPLACE(fb.[Plate Number], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[Plate Number], CHAR(160), '')) END AS NVARCHAR(30)) AS [plate_number],
+    
+    -- DATETIME
+    NULLIF(TRY_CAST(fb.[modifiedon] AS DATETIME2(0)), '1900-01-01 00:00:00') AS [modified_on],
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[Assigned], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[Assigned], CHAR(160), '')) END AS NVARCHAR(20)) AS [assigned],
+    
+    -- BIT
+    CAST(CAST(TRY_CAST(NULLIF(fb.[stencil], '') AS FLOAT) AS INT) AS BIT) AS [stencil],
+    
+    -- DATES
+    NULLIF(TRY_CAST(fb.[compreexpdate] AS DATE), '1900-01-01') AS [compre_exp_date],
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[ltfrbstatus], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[ltfrbstatus], CHAR(160), '')) END AS NVARCHAR(20)) AS [ltfrb_status],
+    CAST(CASE WHEN TRIM(REPLACE([_crcc8_locationname_value], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE([_crcc8_locationname_value], CHAR(160), '')) END AS NVARCHAR(50)) AS [_crcc8_locationname_value],
+    lu.locationName as assignment,
+    ta.a_ID,
+    --ta.assignment,
+    CAST(CASE WHEN TRIM(REPLACE(fb.[tplnumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[tplnumber], CHAR(160), '')) END AS NVARCHAR(30)) AS [tpl_number],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[mvfilenumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[mvfilenumber], CHAR(160), '')) END AS NVARCHAR(30)) AS [mv_file_number],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[tplname], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[tplname], CHAR(160), '')) END AS NVARCHAR(30)) AS [tpl_name],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[Body Number], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[Body Number], CHAR(160), '')) END AS NVARCHAR(30)) AS [body_number],
+    
+    -- NUMERICS
+    CAST(TRY_CAST(NULLIF(fb.[suminsured], '') AS FLOAT) AS INT) AS [suminsured],
+    CAST(TRY_CAST(NULLIF(fb.[Idle], '') AS FLOAT) AS INT) AS [idle],
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[orcrname], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[orcrname], CHAR(160), '')) END AS NVARCHAR(40)) AS [or_cr_name],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[remarks], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[remarks], CHAR(160), '')) END AS NVARCHAR(30)) AS [remarks],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[Deployed], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[Deployed], CHAR(160), '')) END AS NVARCHAR(30)) AS [deploy],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[chassisnumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[chassisnumber], CHAR(160), '')) END AS NVARCHAR(30)) AS [chassis_number],
+    
+    -- DATES
+    NULLIF(TRY_CAST(fb.[ordate] AS DATE), '1900-01-01') AS [or_date],
+    NULLIF(TRY_CAST(fb.[crdate] AS DATE), '1900-01-01') AS [cr_date],
+    NULLIF(TRY_CAST(fb.[bankdue] AS DATE), '1900-01-01') AS [bank_due],
+    
+    -- BIT
+    ISNULL(CAST(CAST(TRY_CAST(NULLIF(fb.[statecode], '') AS FLOAT) AS INT) AS BIT), 0) AS [state_code],
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[ltfrbnumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[ltfrbnumber], CHAR(160), '')) END AS NVARCHAR(30)) AS [ltfrb_number],
+    
+    -- DATES
+    NULLIF(TRY_CAST(fb.[tplexpdate] AS DATE), '1900-01-01') AS [tpl_exp_date],
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[_crcc8_groupname_value], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[_crcc8_groupname_value], CHAR(160), '')) END AS NVARCHAR(40)) AS [_crcc8_groupname_value],
+    gu.groupName as bu, 
+    bu.bu_ID,
+    --bu.business_unit,
+    CAST(CASE WHEN TRIM(REPLACE(fb.[flatbedfleet], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[flatbedfleet], CHAR(160), '')) END AS NVARCHAR(30)) AS [fleet_group],
+    
+    -- DATES
+    NULLIF(TRY_CAST(fb.[createdon] AS DATE), '1900-01-01') AS [created_on],
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[bank], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[bank], CHAR(160), '')) END AS NVARCHAR(20)) AS [bank],
+    CAST(CASE WHEN TRIM(REPLACE(fb.[comprenumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[comprenumber], CHAR(160), '')) END AS NVARCHAR(20)) AS [compre_number],
+    
+    -- YEAR MODEL
+    CAST(TRY_CAST(NULLIF(fb.[yearmodel], '') AS FLOAT) AS INT) AS [year_model],
+    
+    -- STRINGS: Explicitly matching your sample block
+    CAST(CASE WHEN TRIM(REPLACE(fb.[comprename], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[comprename], CHAR(160), '')) END AS NVARCHAR(30)) AS [compre_name],
+    
+    -- DATES & NUMERICS
+    NULLIF(TRY_CAST(fb.[ltfrbexpdate] AS DATE), '1900-01-01') AS [ltfrb_exp_date],
+    CAST(TRY_CAST(NULLIF(fb.[statuscode], '') AS FLOAT) AS INT) AS [status_code],
+    CAST(TRY_CAST(NULLIF(fb.[status], '') AS FLOAT) AS INT) AS status,
+    
+    -- STRINGS
+    CAST(CASE WHEN TRIM(REPLACE(fb.[crcc8_flatbedrecordid], CHAR(160), '')) IN ('', 'N/A') THEN NULL 
+              ELSE TRIM(REPLACE(fb.[crcc8_flatbedrecordid], CHAR(160), '')) END AS NVARCHAR(40)) AS [crcc8_recordid]
+    
+FROM [TMS_APP].[dbo].[FLATBED_RECORD] FB
+
+  LEFT JOIN TMS_app.dbo.tbl_LocationUnit lu 
+    ON FB._crcc8_locationname_value = lu.crcc8_tbl_locationunitid
+  
+  LEFT JOIN tms_assignment ta
+    ON ta.assignment = lu.locationName
+    
+
+  LEFT JOIN TMS_app.dbo.tbl_GroupUnit gu
+    ON FB._crcc8_groupname_value = gu.crcc8_tbl_groupunitid
+
+  LEFT JOIN tms_bu bu
+    ON trim(bu.business_unit)= TRIM(gu.groupName)
+
+--NOT DONE NEEDS COLUMN NAMES
+
+SELECT 
+    -- BULK RECORD (Maintains absolute column sequence matching)
+    CAST(TRY_CAST(NULLIF(BR.[endingnumber], '') AS FLOAT) AS INT),
+    CAST(TRY_CAST(NULLIF(BR.[Deductible (Base)], '') AS FLOAT) AS INT),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[Plate Number], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([Plate Number], CHAR(160), '')) END AS NVARCHAR(30)),
+    
+    NULLIF(TRY_CAST(BR.[modifiedon] AS DATETIME2(0)), '1900-01-01 00:00:00'),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[Assigned], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([Assigned], CHAR(160), '')) END AS NVARCHAR(20)),
+    
+    CAST(CAST(TRY_CAST(NULLIF(BR.[stencil], '') AS FLOAT) AS INT) AS BIT),
+    
+    NULLIF(TRY_CAST(BR.[compreexpdate] AS DATE), '1900-01-01'),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[ltfrbstatus], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([ltfrbstatus], CHAR(160), '')) END AS NVARCHAR(20)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[_crcc8_locationname_value], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([_crcc8_locationname_value], CHAR(160), '')) END AS NVARCHAR(50)),
+    lu.locationName,
+    ta.a_ID,
+    CAST(CASE WHEN TRIM(REPLACE(BR.[tplnumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([tplnumber], CHAR(160), '')) END AS NVARCHAR(30)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[mvfilenumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([mvfilenumber], CHAR(160), '')) END AS NVARCHAR(30)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[tplname], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([tplname], CHAR(160), '')) END AS NVARCHAR(30)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[Body Number], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([Body Number], CHAR(160), '')) END AS NVARCHAR(30)),
+    
+    CAST(TRY_CAST(NULLIF(BR.[suminsured], '') AS FLOAT) AS INT),
+    CAST(TRY_CAST(NULLIF(BR.[Idle], '') AS FLOAT) AS INT),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[orcrname], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([orcrname], CHAR(160), '')) END AS NVARCHAR(40)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[remarks], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([remarks], CHAR(160), '')) END AS NVARCHAR(30)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[Deployed], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([Deployed], CHAR(160), '')) END AS NVARCHAR(30)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[chassisnumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([chassisnumber], CHAR(160), '')) END AS NVARCHAR(30)),
+    
+    NULLIF(TRY_CAST(BR.[ordate] AS DATE), '1900-01-01'),
+    NULLIF(TRY_CAST(BR.[crdate] AS DATE), '1900-01-01'),
+    NULLIF(TRY_CAST(BR.[bankdue] AS DATE), '1900-01-01'),
+    
+    ISNULL(CAST(CAST(TRY_CAST(NULLIF(BR.[statecode], '') AS FLOAT) AS INT) AS BIT), 0),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[ltfrbnumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([ltfrbnumber], CHAR(160), '')) END AS NVARCHAR(30)),
+    
+    NULLIF(TRY_CAST(BR.[tplexpdate] AS DATE), '1900-01-01'),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[_crcc8_groupname_value], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([_crcc8_groupname_value], CHAR(160), '')) END AS NVARCHAR(40)),
+    gu.groupName as bu, 
+    bu.bu_ID,
+    CAST(CASE WHEN TRIM(REPLACE(BR.[fleet], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([fleet], CHAR(160), '')) END AS NVARCHAR(30)), 
+    
+    NULLIF(TRY_CAST(BR.[createdon] AS DATE), '1900-01-01'),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[bank], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([bank], CHAR(160), '')) END AS NVARCHAR(20)),
+    CAST(CASE WHEN TRIM(REPLACE(BR.[comprenumber], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([comprenumber], CHAR(160), '')) END AS NVARCHAR(20)),
+    
+    CAST(TRY_CAST(NULLIF(BR.[yearmodel], '') AS FLOAT) AS INT),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[comprename], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([comprename], CHAR(160), '')) END AS NVARCHAR(30)),
+    
+    NULLIF(TRY_CAST(BR.[ltfrbexpdate] AS DATE), '1900-01-01'),
+    CAST(TRY_CAST(NULLIF(BR.[statuscode], '') AS FLOAT) AS INT),
+    CAST(TRY_CAST(NULLIF(BR.[status], '') AS FLOAT) AS INT),
+    
+    CAST(CASE WHEN TRIM(REPLACE(BR.[crcc8_bulkrecordid], CHAR(160), '')) IN ('', 'N/A') THEN NULL ELSE TRIM(REPLACE([crcc8_bulkrecordid], CHAR(160), '')) END AS NVARCHAR(40))
+    
+FROM [TMS_APP].[dbo].[BULK_RECORD] BR
+
+  LEFT JOIN TMS_app.dbo.tbl_LocationUnit lu 
+    ON BR._crcc8_locationname_value = lu.crcc8_tbl_locationunitid
+  
+  LEFT JOIN tms_assignment ta
+    ON ta.assignment = lu.locationName
+    
+  LEFT JOIN TMS_app.dbo.tbl_GroupUnit gu
+    ON BR._crcc8_groupname_value = gu.crcc8_tbl_groupunitid
+
+  LEFT JOIN tms_bu bu
+    ON trim(bu.business_unit)= TRIM(gu.groupName)

@@ -80,9 +80,9 @@ CREATE TABLE [dbo].[CementForecastSales] (
     [Destination] NVARCHAR(255),
     [Remarks] NVARCHAR(500), --PAKI ADD MAMAYA
     [CreatedDate] DATETIME DEFAULT GETDATE(),
-    [ModifiedDate] DATETIME(0) 
-);
-GO
+    [ModifiedDate] DATETIME2(0) 
+)
+
 
 CREATE TABLE HeadPMSLastODO (
     ID INT IDENTITY(1,1) PRIMARY KEY,
@@ -163,7 +163,7 @@ CREATE TABLE DashboardAccountManager (
     [Email] NVARCHAR(255) NOT NULL UNIQUE,
     [Role] NVARCHAR(50) DEFAULT 'User',
     [CreatedAt] DATETIME2(0) DEFAULT GETDATE(),
-    [ModifiedAt] DATETIME2(0) DEFAULT 
+    [ModifiedAt] DATETIME2(0) 
 );
 
 
@@ -544,4 +544,87 @@ CREATE TABLE user_action_log (
     ActionDescription NVARCHAR(255) NOT NULL,
     
     CONSTRAINT PK_user_action_log PRIMARY KEY CLUSTERED (user_action_Id)
+);
+
+CREATE TABLE tms_truck_class (
+    class_ID INT NOT NULL, -- Disabled IDENTITY so we can manually force 0 and 1
+    class_name NVARCHAR(100) NOT NULL,
+    
+    CONSTRAINT PK_tms_truck_class PRIMARY KEY CLUSTERED (class_ID)
+);
+
+-- Seed the initial values
+INSERT INTO tms_truck_class (class_ID, class_name)
+VALUES 
+(0, 'For Hire'),
+(1, 'Private');
+
+create table tms_bu (
+	bu_ID INT IDENTITY(1,1) NOT NULL,
+	business_unit char(15) NOT NULL,
+
+	CONSTRAINT PK_tms_bu PRIMARY KEY CLUSTERED (bu_ID)
+);
+
+INSERT INTO tms_bu (business_unit)
+values
+('CAR CARRIER'),
+('CARGO-2A'),
+('CARGO-3A'),
+('DAVAO'),
+('J EXPRESS'),
+('LUGAIT'),
+('PORT'),
+('SBUO-1A'),
+('ZION'),
+('ZION BUKIDNON');
+
+create table tms_assignment (
+	a_ID INT IDENTITY(1,1) NOT NULL,
+	assignment varchar(20) NOT NULL,
+
+	CONSTRAINT PK_tms_assignment PRIMARY KEY CLUSTERED (a_ID)
+);
+
+INSERT INTO tms_assignment (assignment)
+values
+('CAR CARRIER'),
+('CARGO'),
+('CEMENT'),
+('DAVAO'),
+('LUGAIT'),
+('PORT');
+
+CREATE TABLE client_contact_persons (
+    ContactID INT PRIMARY KEY IDENTITY(1,1),
+ 
+    FormID INT NOT NULL,
+ 
+    ContactPerson NVARCHAR(255),
+    Position NVARCHAR(255),
+    ContactNumber NVARCHAR(100),
+    EmailAddress NVARCHAR(255),
+ 
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME NULL,
+ 
+    FOREIGN KEY (FormID)
+    REFERENCES client_visit_forms(id)
+);
+
+CREATE TABLE client_contact_persons (
+    ContactID INT PRIMARY KEY IDENTITY(1,1),
+ 
+    FormID INT NOT NULL,
+ 
+    ContactPerson NVARCHAR(255),
+    Position NVARCHAR(255),
+    ContactNumber NVARCHAR(100),
+    EmailAddress NVARCHAR(255),
+ 
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME NULL,
+ 
+    FOREIGN KEY (FormID)
+    REFERENCES client_visit_forms(id)
 );
