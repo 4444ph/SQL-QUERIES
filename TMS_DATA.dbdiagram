@@ -9,49 +9,109 @@
       {
         "name": "Truck",
         "schemaName": "public",
-        "x": 245.91392105777004,
-        "y": -377.5784704949865
+        "x": 256,
+        "y": -72
       },
       {
         "name": "Trailer",
         "schemaName": "public",
-        "x": 240,
-        "y": -8
+        "x": 256,
+        "y": -400
       },
       {
         "name": "vw_paired_trucks",
         "schemaName": "public",
-        "x": 592,
-        "y": -72
+        "x": 614.6070187047992,
+        "y": -432
       },
       {
         "name": "trailer_axle",
         "schemaName": "public",
-        "x": -39.91519719667842,
-        "y": 88
+        "x": -16,
+        "y": -304
       },
       {
         "name": "business_unit",
         "schemaName": "public",
-        "x": 618.9830407934883,
-        "y": -249.6753084222292
+        "x": 616,
+        "y": -240
       },
       {
         "name": "assignment",
         "schemaName": "public",
-        "x": -88,
-        "y": -218.4924954923019
+        "x": -96,
+        "y": -176
       },
       {
         "name": "unit_status",
         "schemaName": "public",
-        "x": -63.872795795017645,
-        "y": -72
+        "x": -62.7347781702008,
+        "y": 120
+      },
+      {
+        "name": "truck_type",
+        "schemaName": "public",
+        "x": 616,
+        "y": 152
+      },
+      {
+        "name": "rfid_flat",
+        "schemaName": "public",
+        "x": 615.004397736999,
+        "y": 288
       }
     ],
     "tableGroupCollapseStates": [],
     "stickyNoteLayouts": [],
     "referencePaths": [
+      {
+        "firstFieldNames": [
+          "autosweep_num"
+        ],
+        "firstTableName": "rfid_flat",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "autosweep"
+        ],
+        "secondTableName": "Truck",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": [
+          {
+            "x": 554.2138740272686,
+            "y": 400
+          },
+          {
+            "x": 554.2138740272686,
+            "y": 264
+          }
+        ]
+      },
+      {
+        "firstFieldNames": [
+          "easytrip_num"
+        ],
+        "firstTableName": "rfid_flat",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "easytrip"
+        ],
+        "secondTableName": "Truck",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": [
+          {
+            "x": 580.2761880557075,
+            "y": 368
+          },
+          {
+            "x": 580.2761880557075,
+            "y": 232
+          }
+        ]
+      },
       {
         "firstFieldNames": [
           "status_Id"
@@ -65,12 +125,22 @@
         "secondTableName": "Truck",
         "secondSchemaName": "public",
         "secondRelation": "1",
-        "checkPoints": [
-          {
-            "x": 225.91392105777004,
-            "y": -24
-          }
-        ]
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "truck_type_Id"
+        ],
+        "firstTableName": "truck_type",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "truck_type_id"
+        ],
+        "secondTableName": "Truck",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
       },
       {
         "firstFieldNames": [
@@ -102,8 +172,12 @@
         "secondRelation": "1",
         "checkPoints": [
           {
-            "x": 572,
-            "y": -329.5784704949865
+            "x": 525.3104395623564,
+            "y": -24
+          },
+          {
+            "x": 525.3104395623564,
+            "y": -286.83538844923754
           }
         ]
       },
@@ -119,7 +193,7 @@
         ],
         "secondTableName": "Trailer",
         "secondSchemaName": "public",
-        "secondRelation": "1",
+        "secondRelation": "*",
         "checkPoints": []
       },
       {
@@ -135,7 +209,16 @@
         "secondTableName": "business_unit",
         "secondSchemaName": "public",
         "secondRelation": "1",
-        "checkPoints": []
+        "checkPoints": [
+          {
+            "x": 558.2621462289258,
+            "y": 104
+          },
+          {
+            "x": 558.2621462289258,
+            "y": -192
+          }
+        ]
       },
       {
         "firstFieldNames": [

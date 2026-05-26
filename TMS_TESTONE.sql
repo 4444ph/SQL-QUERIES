@@ -831,3 +831,40 @@ FROM [TMS_APP].[dbo].[BULK_RECORD] BR
 
   LEFT JOIN tms_bu bu
     ON trim(bu.business_unit)= TRIM(gu.groupName)
+
+    SELECT 
+       tt.[head]
+      ,tt.[brand]
+      ,tt.[model]
+      ,tt.[year_model]
+      ,tt.[plate_no]
+      ,tt.[plate_ending_number]
+      --,tt.[bu]
+      ,tt.[bu_ID]
+      --,tt.[assignment]
+      ,tt.[a_ID]
+      ,tt.[chassis_no]
+      ,tt.[engine_number]
+      ,tt.[truck_type_id]
+      ,tt.[status_Id]
+      ,tt.[classification_Id]
+      ,tt.[conduction_number]
+      ,tt.[remarks]
+      ,tt.[mv_file_no]
+      ,tt.[orcr_name]
+      ,tt.[cr_date]
+      ,tt.[or_expiry_date]
+      ,tt.[stencil]
+      ,tt.[tpl_name]
+      ,tt.[tpl_number]
+      ,tt.[tpl_exp_date]
+      ,tt.[compre_name]
+      ,tt.[compre_num]
+      ,tt.[compre_exp_date]
+      ,tt.[bank]
+      ,tt.[bank_due_date]
+      ,tt.[ltfrb_no]
+      ,tt.[ltfrb_status]
+      ,tt.[ltfrb_exp_date]
+  FROM [WILLOWTestDB].[dbo].[TMS_TRUCK] tt
+  where tt.head = 'H-1590'

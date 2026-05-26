@@ -7,6 +7,10 @@ Table Truck as tr {
   assignment_Id int
   //paired_trailer varchar(20)//ID NG TRAILER
   status_id int [ref: - us.status_Id]
+  truck_type_id int [ref: - type.truck_type_Id]
+  //rfid_id int [ref: - rfid.rfid_Id]
+  easytrip varchar(255) [ref: - rfid_flat.easytrip_num]
+  autosweep varchar(255) [ref: - rfid_flat.autosweep_num]
 }
 
 Table Trailer as trl {
@@ -23,8 +27,8 @@ Table Trailer as trl {
 
 Table vw_paired_trucks as pt {
   paired_truck_Id int [unique, not null]
-  truck_Id int
   trailer_Id int
+  truck_Id int
   //bu_id int
   //assignment_Id int
   date_paired datetime2(0) [default: 'GETDATE()']
@@ -33,9 +37,14 @@ Table vw_paired_trucks as pt {
 
 Table trailer_axle as ax {
   axle_Id int [pk, unique, not null]
-  trailer_Id int
+  //trailer_Id int
   axle_number int
 }
+
+Table truck_type as type {
+  truck_type_Id int [pk, unique, not null]
+  truck_type_name varchar(20)
+} //CONTAINS '4W, 6W, 10W, 12W, 14W, 18W'
 
 Table business_unit as bu {
   business_unit_Id int [pk, unique, not null]
@@ -53,6 +62,12 @@ Table unit_status as us {
   
 }
 
+Table rfid_flat {
+  truck_id int
+  easytrip_num varchar(255)
+  autosweep_num varchar(255)
+}
+
 // Relationships
   /**SQL EQUIVALENT
     LEFT JOIN vw_paired_trailer pt
@@ -63,7 +78,7 @@ Table unit_status as us {
 Ref: trl.trailer_Id - pt.trailer_Id
 Ref: tr.truck_Id - pt.truck_Id
 
-Ref: ax.axle_Id - trl.axle_Id
+Ref: ax.axle_Id < trl.axle_Id
 
 Ref: tr.bu_id - bu.business_unit_Id
 Ref: trl.bu_id - bu.business_unit_Id

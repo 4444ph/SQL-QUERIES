@@ -628,3 +628,41 @@ CREATE TABLE client_contact_persons (
     FOREIGN KEY (FormID)
     REFERENCES client_visit_forms(id)
 );
+
+CREATE TABLE tms_truck_type (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    truck_type VARCHAR(10) NOT NULL UNIQUE
+)
+
+INSERT INTO tms_truck_type (truck_type)
+VALUES 
+    ('4W'),
+    ('6W'),
+    ('10W'),
+    ('12W'),
+    ('14W'),
+    ('18W');
+
+CREATE TABLE truck_rfid_flat (
+    truck_id INT PRIMARY KEY, -- One row per truck
+    easytrip_number VARCHAR(255) NULL,
+    autosweep_number VARCHAR(255) NULL
+);
+
+CREATE TABLE tms_trailer_axle (
+    axle_id INT NOT NULL,
+    axle_type NVARCHAR(50) NOT NULL,
+    wheel_count INT NOT NULL, -- Changed from wheel_count to clarify it's the total
+    description NVARCHAR(100) NOT NULL,
+    
+    CONSTRAINT PK_tms_trailer_axle PRIMARY KEY CLUSTERED (axle_id)
+);
+
+ --3. Insert with correct, clear descriptions
+INSERT INTO tms_trailer_axle (axle_id, axle_type, wheel_count, description)
+VALUES 
+(1, 'Single Axle', 4,  '4 wheels 1 axle'),
+(2, 'Tandem Axle', 8,  '8 wheels 2 axles'),
+(3, 'Triple Axle', 12, '12 wheels 3 axles'),
+(4, 'Multi Axle',  16, '16 wheels 4 axles'),
+(5, '5-Axle',      20, '20 wheels 5 axles');
