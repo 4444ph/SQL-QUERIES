@@ -868,3 +868,66 @@ FROM [TMS_APP].[dbo].[BULK_RECORD] BR
       ,tt.[ltfrb_exp_date]
   FROM [WILLOWTestDB].[dbo].[TMS_TRUCK] tt
   where tt.head = 'H-1590'
+
+SELECT 
+       ttn.[head]
+      ,ttn.[brand]
+      ,ttn.[model]
+      ,ttn.[year_model]
+      ,ttn.[plate_no]
+      ,ttn.[plate_ending_number]
+      --,ttn.[bu_ID]
+      ,tb.business_unit
+      --,ttn.[a_ID]
+      ,ta.assignment
+      ,ttn.[chassis_no]
+      ,ttn.[engine_number]
+      --,ttn.[unit_type_id]
+      ,ttt.truck_type
+      --,ttn.[status_Id]
+      ,tus.status_name
+      --,ttn.[classification_Id]
+      ,ttc.class_name as classification
+      ,ttn.[conduction_number]
+      ,ttn.[remarks]
+      ,ttn.[mv_file_no]
+      ,ttn.[orcr_name]
+      ,ttn.[cr_date]
+      ,ttn.[or_expiry_date]
+      ,ttn.[stencil]
+      ,ttn.tpl_name
+      ,ttn.[tpl_number]
+      ,ttn.[tpl_exp_date]
+      ,ttn.[compre_name]
+      ,ttn.[compre_num]
+      ,ttn.[compre_exp_date]
+      ,ttn.[bank]
+      ,ttn.[bank_due_date]
+      ,ttn.[ltfrb_no]
+      ,ttn.[ltfrb_status]
+      ,ttn.[ltfrb_exp_date]
+      ,ttr.easytrip_number
+      ,ttr.et_details
+      ,ttr.autosweep_number
+      ,ttr.as_details
+  FROM [WILLOWTestDB].[dbo].tms_truck_new ttn
+  
+  left join tms_bu tb --bu
+    on tb.bu_ID = ttn.bu_ID
+
+  left join tms_assignment ta --assignment
+    on ta.a_ID = ttn.a_ID
+
+  LEFT JOIN tms_truck_type ttt --unit type
+    ON ttt.id = ttn.truck_type_id
+
+  left join tms_truck_rfid ttr --rfid
+    on ttr.truck_id = ttn.head
+
+  left join tms_unit_status tus --unit status
+    on tus.StatusID = ttn.status_Id
+
+  left join tms_truck_class ttc --classification
+    on ttc.class_ID = ttn.classification_Id
+  
+  --where tb.business_unit = 'SBUO-1A'
