@@ -1,0 +1,100 @@
+// CENTRAL TRANSACTIONAL TABLE
+Table tms_flatbed_new {
+  trailer_id nvarchar(30) [pk] // Marked as PK for diagram structure
+  plate_number nvarchar(30)
+  plate_ending_number int
+  chassis_number nvarchar(30)
+  trailer_type varchar(1)
+  axle_type nvarchar(max)
+  year_model int
+  bu_ID int
+  fleet_group nvarchar(30)
+  a_ID int
+  assigned nvarchar(20)
+  idle int
+  status_code int
+  status int
+  remarks nvarchar(30)
+  deploy nvarchar(30)
+  has_stencil bit
+  mv_file_number nvarchar(30)
+  or_cr_name nvarchar(40)
+  or_date date
+  cr_date date
+  state_code bit [not null]
+  ltfrb_number nvarchar(30)
+  ltfrb_status_id int
+  ltfrb_exp_date date
+  tpl_number nvarchar(30)
+  tpl_id int
+  tpl_exp_date date
+  compre_number nvarchar(20)
+  compre_id int
+  compre_exp_date date
+  bank_due_date date
+  bank_id int
+  suminsured int
+  deductible_base int
+  created_on date
+  modified_on datetime2(0)
+  from_tbl varchar(7) [not null]
+}
+
+// LOOKUP / DIMENSION TABLES
+Table tms_trailer_type {
+  type_id int [pk, not null]
+  trailer_type nvarchar(100) [not null]
+}
+
+Table tms_trailer_axle {
+  axle_id int [pk, not null]
+  axle_type nvarchar(50) [not null]
+  wheel_count int [not null]
+  description nvarchar(100) [not null]
+}
+
+Table tms_bu {
+  bu_ID int [pk, not null]
+  business_unit char(15)
+}
+
+Table tms_assignment {
+  a_ID int [pk, not null]
+  assignment varchar(20) [not null]
+}
+
+Table tms_unit_status {
+  StatusId int [pk, not null]
+  status_name nvarchar(50) [not null]
+}
+
+Table tms_ltfrb_status {
+  status_id int [pk, not null]
+  status_name nvarchar(150)
+}
+
+Table tms_tpl_insurance {
+  tpl_id int [pk, not null]
+  tpl_name nvarchar(50)
+}
+
+Table tms_compre_insurance {
+  compre_id int [pk, not null]
+  compre_name nvarchar(50)
+}
+
+Table tms_bank {
+  bank_id int [pk, not null]
+  bank_name nvarchar(50)
+}
+
+// RELATIONSHIPS (Many-to-One / Foreign Keys)
+Ref: tms_flatbed_new.trailer_type > tms_trailer_type.type_id
+Ref: tms_flatbed_new.axle_type > tms_trailer_axle.axle_id
+Ref: tms_flatbed_new.bu_ID > tms_bu.bu_ID
+Ref: tms_flatbed_new.a_ID > tms_assignment.a_ID
+Ref: tms_flatbed_new.status > tms_unit_status.StatusId
+Ref: tms_flatbed_new.ltfrb_status_id > tms_ltfrb_status.status_id
+Ref: tms_flatbed_new.tpl_id > tms_tpl_insurance.tpl_id
+Ref: tms_flatbed_new.compre_id > tms_compre_insurance.compre_id
+Ref: tms_flatbed_new.bank_id > tms_bank.bank_id

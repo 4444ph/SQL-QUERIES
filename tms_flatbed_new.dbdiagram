@@ -1,0 +1,211 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "tms_flatbed_new",
+        "schemaName": "public",
+        "x": 552,
+        "y": 16
+      },
+      {
+        "name": "tms_trailer_type",
+        "schemaName": "public",
+        "x": 936.8223077769132,
+        "y": 87.64415133361683
+      },
+      {
+        "name": "tms_trailer_axle",
+        "schemaName": "public",
+        "x": 940.4023859019132,
+        "y": 230.82620628905215
+      },
+      {
+        "name": "tms_bu",
+        "schemaName": "public",
+        "x": 153.84771630366072,
+        "y": 157.95885629319545
+      },
+      {
+        "name": "tms_assignment",
+        "schemaName": "public",
+        "x": 119.9229176174428,
+        "y": 303.2743780139678
+      },
+      {
+        "name": "tms_unit_status",
+        "schemaName": "public",
+        "x": 105.5581715236928,
+        "y": 432.76409208726665
+      },
+      {
+        "name": "tms_ltfrb_status",
+        "schemaName": "public",
+        "x": 123.24944769826755,
+        "y": 751.931454264404
+      },
+      {
+        "name": "tms_tpl_insurance",
+        "schemaName": "public",
+        "x": 147.73235785451755,
+        "y": 848.1656944019604
+      },
+      {
+        "name": "tms_compre_insurance",
+        "schemaName": "public",
+        "x": 121.26897894826755,
+        "y": 943.8258076474733
+      },
+      {
+        "name": "tms_bank",
+        "schemaName": "public",
+        "x": 134.71331488576755,
+        "y": 1039.5468576027904
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "trailer_type"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "type_id"
+        ],
+        "secondTableName": "tms_trailer_type",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "axle_type"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "axle_id"
+        ],
+        "secondTableName": "tms_trailer_axle",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "bu_ID"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "bu_ID"
+        ],
+        "secondTableName": "tms_bu",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "a_ID"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "a_ID"
+        ],
+        "secondTableName": "tms_assignment",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "status"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "StatusId"
+        ],
+        "secondTableName": "tms_unit_status",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "ltfrb_status_id"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "status_id"
+        ],
+        "secondTableName": "tms_ltfrb_status",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "tpl_id"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "tpl_id"
+        ],
+        "secondTableName": "tms_tpl_insurance",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "compre_id"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "compre_id"
+        ],
+        "secondTableName": "tms_compre_insurance",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "bank_id"
+        ],
+        "firstTableName": "tms_flatbed_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "bank_id"
+        ],
+        "secondTableName": "tms_bank",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}

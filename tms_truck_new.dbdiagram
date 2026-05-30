@@ -1,0 +1,253 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "tms_truck_new",
+        "schemaName": "public",
+        "x": 641.43896484375,
+        "y": 12
+      },
+      {
+        "name": "tms_truck_brand",
+        "schemaName": "public",
+        "x": 107.07326898338141,
+        "y": 77.2975714350548
+      },
+      {
+        "name": "tms_truck_type",
+        "schemaName": "public",
+        "x": 118.88625726463141,
+        "y": 253.43039286701526
+      },
+      {
+        "name": "tms_truck_class",
+        "schemaName": "public",
+        "x": 116.64236078025641,
+        "y": 530.4776428804244
+      },
+      {
+        "name": "tms_bu",
+        "schemaName": "public",
+        "x": 1159.2515803701608,
+        "y": 235.96827515494022
+      },
+      {
+        "name": "tms_assignment",
+        "schemaName": "public",
+        "x": 1159.2515803701608,
+        "y": 354.4265714061743
+      },
+      {
+        "name": "tms_unit_status",
+        "schemaName": "public",
+        "x": 111.71975335838141,
+        "y": 395.51214282472597
+      },
+      {
+        "name": "tms_tpl_insurance",
+        "schemaName": "public",
+        "x": 162.4887963271314,
+        "y": 684.4316785535991
+      },
+      {
+        "name": "tms_compre_insurance",
+        "schemaName": "public",
+        "x": 1100.1808960344936,
+        "y": 780.4265714061742
+      },
+      {
+        "name": "tms_bank",
+        "schemaName": "public",
+        "x": 147.6416283583814,
+        "y": 874.9374285443162
+      },
+      {
+        "name": "tms_ltfrb_status",
+        "schemaName": "public",
+        "x": 1101.2822143938686,
+        "y": 970.9323213968912
+      },
+      {
+        "name": "tms_truck_rfid",
+        "schemaName": "public",
+        "x": 1159.2515803701608,
+        "y": -20.434654739026655
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "brand"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "brand_id"
+        ],
+        "secondTableName": "tms_truck_brand",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "truck_type_id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "id"
+        ],
+        "secondTableName": "tms_truck_type",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "classification_Id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "class_ID"
+        ],
+        "secondTableName": "tms_truck_class",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "bu_ID"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "bu_ID"
+        ],
+        "secondTableName": "tms_bu",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "a_ID"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "a_ID"
+        ],
+        "secondTableName": "tms_assignment",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "status_Id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "StatusId"
+        ],
+        "secondTableName": "tms_unit_status",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "tpl_id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "tpl_id"
+        ],
+        "secondTableName": "tms_tpl_insurance",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "compre_id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "compre_id"
+        ],
+        "secondTableName": "tms_compre_insurance",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "bank_id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "bank_id"
+        ],
+        "secondTableName": "tms_bank",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "ltfrb_status_id"
+        ],
+        "firstTableName": "tms_truck_new",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "status_id"
+        ],
+        "secondTableName": "tms_ltfrb_status",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "truck_id"
+        ],
+        "firstTableName": "tms_truck_rfid",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "head"
+        ],
+        "secondTableName": "tms_truck_new",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      }
+    ]
+  },
+  "views": {}
+}

@@ -726,3 +726,164 @@ LEFT JOIN ranked_jo jo
 WHERE tr.bu = 'SBUO-1A'
 --and tr.Assignment = 'SOLD'
 --Order by Id asc
+
+--NEW AND IMPROVED TRUCK DATA
+
+USE [WILLOWTestDB]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER VIEW [dbo].[vw_truck_data] AS 
+
+-- 1. First CTE: Ranks the Job Orders
+WITH ranked_jo AS (
+    SELECT
+        Jrn, Jonumber, Activity, Etr, Location, jostatus,
+        Remarks, [Classification], Modified,
+        ROW_NUMBER() OVER (
+            PARTITION BY Jrn
+            ORDER BY Modified DESC
+        ) AS rn
+    FROM SHAREPOINT_DATA.dbo.jo_list
+),
+
+-- 2. Second CTE: Prepares the base data and calculates the NULL fallbacks for Category
+PreparedData AS (
+    SELECT 
+        tr.Id,
+        tr.head,
+        CONCAT(tr.Head, ' | ', tr.PlateNo) as unit,
+        tr.Brand as brand,
+        l.Bo as paired_trailer,
+        tr.PlateNo as plate_no,
+        tr.Assignment as assignment,
+        tr.Bu as team,
+        l.OE,
+        CAST(l.[OE Date] as DATE) as oe_date,
+        l.LiveLocation as last_location,
+        l.LastUpdate as last_update,
+        l.GpsStatus AS gps_status,
+        l.[Trip Status] as sbuo_status,
+
+        -- Calculate trip_status here so the outer query can read it cleanly
+        CASE 
+            WHEN ur.Category IS NULL THEN              
+                CASE 
+                    WHEN jr.Jrnumber IS NULL THEN 'AVAILABLE'
+                    ELSE 'IDLE'
+                END
+            ELSE ur.Category 
+        END AS trip_status,
+
+        jr.Jrnumber as jr_number,
+        jr.Jrstatus as jr_status,
+        jr.Requeststatus as request_status,
+        jr.location as jr_location,
+        jr.created as jr_age,
+        jr.ApprovalTimestamp as jr_approval,
+
+        jo.Jonumber as jo_number,
+        jo.Jostatus as jo_status,
+        jo.Activity as jo_activity,
+        jo.classification as jo_classification,
+        CONCAT(jo.Jonumber, ' - ', jo.Remarks) AS jo_remarks,
+        jo.etr,
+        
+        CASE
+            WHEN jr.Location LIKE '%Rescue%' THEN CONCAT(jr.Jrnumber, ' - ', jr.Location)
+            ELSE NULL
+        END AS for_rescue,
+        
+        -- Pull in the underlying status flags for the outer CASE statement
+        urs.IsRescue,
+        urs.IsWFP,
+        urs.JRState
+
+    FROM SHAREPOINT_DATA.dbo.masterlist_tractor tr
+    LEFT JOIN DISPATCH_APP_DMS.dbo.LiveDMSView_CEM l
+        ON tr.head = l.Vehicle
+        AND l.[Trip Status] NOT IN ('Served', 'Cancelled') 
+    LEFT JOIN SHAREPOINT_DATA.dbo.urstat_ref ur 
+        ON l.[Trip Status] = ur.Status
+    LEFT JOIN SHAREPOINT_DATA.dbo.jr_list jr             
+        ON tr.Head = jr.Head
+        AND jr.Ur = 'Tractor'
+    LEFT JOIN ranked_jo jo
+        ON jo.Jrn = jr.Jrnumber
+        AND jo.rn = 1
+    LEFT JOIN truck_ur_status urs 
+        ON tr.Head = urs.Head
+)
+
+-- 3. Final Output: Evaluates ur_status using the newly calculated trip_status
+SELECT 
+    Id,
+    head,
+    unit,
+    brand,
+    paired_trailer,
+    plate_no,
+    assignment,
+    team,
+    OE,
+    oe_date,
+    last_location,
+    last_update,
+    gps_status,
+    trip_status,     -- Pulling the evaluated category from the CTE
+    sbuo_status,
+    
+    -- Evaluated with correct business hierarchy
+    CASE
+        -- 1st Priority: Rescue overrides generic categories
+        WHEN IsRescue = 1
+        THEN
+            CASE
+                WHEN JRState = 'PENDING_ACCEPTANCE'        THEN 'FOR RESC'
+                WHEN JRState = 'IN_PROGRESS'               THEN 'ON RESC'
+                ELSE                                            'FOR RESC'
+            END
+
+        -- 2nd Priority: WFP overrides generic categories
+        WHEN IsWFP = 1                                     THEN 'WFP'
+
+        -- 3rd Priority: Standard categories (calculated clean via CTE)
+        WHEN trip_status IN ('IDLE', 'AVAILABLE', 'PRELOADED')
+        THEN
+            CASE
+                WHEN JRState = 'PENDING_ACCEPTANCE'        THEN 'AT YARD'
+                WHEN JRState = 'NO_JR'                     THEN trip_status
+                WHEN JRState = 'IN_PROGRESS'               THEN 'ON GOING'
+                WHEN JRState = 'DONE'                      THEN 'NOT RELEASED'
+                WHEN JRState IS NULL                       THEN trip_status
+                ELSE                                            'APPROVED'
+            END
+
+        -- 4th Priority: Active trips
+        WHEN trip_status = 'ON TRIP'                       THEN 'ON TRIP'
+
+        -- Fallback safety net
+        ELSE                                                    'IDLE'
+    END AS ur_status,
+    
+    jr_number,
+    jr_status,
+    request_status,
+    jr_location,
+    jr_age,
+    jr_approval,
+    
+    jo_number,
+    jo_status,
+    jo_activity,
+    jo_classification,
+    jo_remarks,
+    etr,
+    for_rescue
+    
+FROM PreparedData;
+GO

@@ -1,0 +1,75 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "tms_bulk_new",
+        "schemaName": "public",
+        "x": 564.56201171875,
+        "y": 12
+      },
+      {
+        "name": "tms_trailer_type",
+        "schemaName": "public",
+        "x": 980.4000719752976,
+        "y": 31.04475027879522
+      },
+      {
+        "name": "tms_trailer_axle",
+        "schemaName": "public",
+        "x": 980.4000719752976,
+        "y": 171.77510026020883
+      },
+      {
+        "name": "tms_bu",
+        "schemaName": "public",
+        "x": 112.30235146832153,
+        "y": 171.77510026020883
+      },
+      {
+        "name": "tms_assignment",
+        "schemaName": "public",
+        "x": 75.98692178082155,
+        "y": 300.1256470447705
+      },
+      {
+        "name": "tms_unit_status",
+        "schemaName": "public",
+        "x": 61.31114053082155,
+        "y": 429.42914685890713
+      },
+      {
+        "name": "tms_ltfrb_status",
+        "schemaName": "public",
+        "x": 82.16367959332155,
+        "y": 716.1692489777507
+      },
+      {
+        "name": "tms_tpl_insurance",
+        "schemaName": "public",
+        "x": 112.08018349957155,
+        "y": 811.192198290056
+      },
+      {
+        "name": "tms_compre_insurance",
+        "schemaName": "public",
+        "x": 997.8711115021447,
+        "y": 908.7544476395339
+      },
+      {
+        "name": "tms_bank",
+        "schemaName": "public",
+        "x": 997.8711115021447,
+        "y": 1004.5197350220943
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": []
+  },
+  "views": {}
+}
