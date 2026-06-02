@@ -7,64 +7,64 @@
     "detailLevel": "All",
     "tablePositions": [
       {
+        "name": "tms_flatbed_new",
+        "schemaName": "public",
+        "x": 1592.1612262288722,
+        "y": 1072
+      },
+      {
         "name": "tms_bulk_new",
         "schemaName": "public",
-        "x": 564.56201171875,
-        "y": 12
+        "x": 849.5107421875,
+        "y": 1072
       },
       {
-        "name": "tms_trailer_type",
+        "name": "tms_asset_document",
         "schemaName": "public",
-        "x": 980.4000719752976,
-        "y": 31.04475027879522
-      },
-      {
-        "name": "tms_trailer_axle",
-        "schemaName": "public",
-        "x": 980.4000719752976,
-        "y": 171.77510026020883
-      },
-      {
-        "name": "tms_bu",
-        "schemaName": "public",
-        "x": 112.30235146832153,
-        "y": 171.77510026020883
-      },
-      {
-        "name": "tms_assignment",
-        "schemaName": "public",
-        "x": 75.98692178082155,
-        "y": 300.1256470447705
-      },
-      {
-        "name": "tms_unit_status",
-        "schemaName": "public",
-        "x": 61.31114053082155,
-        "y": 429.42914685890713
-      },
-      {
-        "name": "tms_ltfrb_status",
-        "schemaName": "public",
-        "x": 82.16367959332155,
-        "y": 716.1692489777507
-      },
-      {
-        "name": "tms_tpl_insurance",
-        "schemaName": "public",
-        "x": 112.08018349957155,
-        "y": 811.192198290056
+        "x": 1186.699781785006,
+        "y": 632.8583287468706
       },
       {
         "name": "tms_compre_insurance",
         "schemaName": "public",
-        "x": 997.8711115021447,
-        "y": 908.7544476395339
+        "x": 789.3274867586947,
+        "y": 633.671946381748
+      },
+      {
+        "name": "tms_tpl_insurance",
+        "schemaName": "public",
+        "x": 820.7991664461947,
+        "y": 929.201440153835
       },
       {
         "name": "tms_bank",
         "schemaName": "public",
-        "x": 997.8711115021447,
-        "y": 1004.5197350220943
+        "x": 805.9519984774447,
+        "y": 781.031820681247
+      },
+      {
+        "name": "tms_ltfrb_status",
+        "schemaName": "public",
+        "x": 790.4288051180697,
+        "y": 481.27648427469506
+      },
+      {
+        "name": "tms_bu",
+        "schemaName": "public",
+        "x": 1222.265699753756,
+        "y": 1295.149178435507
+      },
+      {
+        "name": "tms_assignment",
+        "schemaName": "public",
+        "x": 1205.079176316256,
+        "y": 1400.2760446961177
+      },
+      {
+        "name": "tms_unit_status",
+        "schemaName": "public",
+        "x": 1198.065016160006,
+        "y": 1507.066509672742
       }
     ],
     "tableGroupCollapseStates": [],
@@ -72,30 +72,15 @@
     "referencePaths": [
       {
         "firstFieldNames": [
-          "trailer_type"
+          "bu_ID"
         ],
-        "firstTableName": "tms_bulk_new",
+        "firstTableName": "tms_flatbed_new",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
-          "type_id"
+          "bu_ID"
         ],
-        "secondTableName": "tms_trailer_type",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "axle_type"
-        ],
-        "firstTableName": "tms_bulk_new",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "axle_id"
-        ],
-        "secondTableName": "tms_trailer_axle",
+        "secondTableName": "tms_bu",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
@@ -117,54 +102,114 @@
       },
       {
         "firstFieldNames": [
-          "a_ID"
+          "asset_reference"
         ],
-        "firstTableName": "tms_bulk_new",
+        "firstTableName": "tms_asset_document",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
-          "a_ID"
+          "trailer_id"
         ],
-        "secondTableName": "tms_assignment",
+        "secondTableName": "tms_flatbed_new",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "status"
+          "asset_reference"
         ],
-        "firstTableName": "tms_bulk_new",
+        "firstTableName": "tms_asset_document",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
+          "body_number"
+        ],
+        "secondTableName": "tms_bulk_new",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "a_ID"
+        ],
+        "firstTableName": "tms_assignment",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "a_ID"
+        ],
+        "secondTableName": "tms_flatbed_new",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "a_ID"
+        ],
+        "firstTableName": "tms_assignment",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "a_ID"
+        ],
+        "secondTableName": "tms_bulk_new",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
           "StatusId"
         ],
-        "secondTableName": "tms_unit_status",
+        "firstTableName": "tms_unit_status",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "status_code"
+        ],
+        "secondTableName": "tms_flatbed_new",
         "secondSchemaName": "public",
-        "secondRelation": "1",
+        "secondRelation": "*",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "ltfrb_status_id"
+          "StatusId"
         ],
-        "firstTableName": "tms_bulk_new",
+        "firstTableName": "tms_unit_status",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "status_code"
+        ],
+        "secondTableName": "tms_bulk_new",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "provider_id"
+        ],
+        "firstTableName": "tms_asset_document",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
-          "status_id"
+          "compre_Id"
         ],
-        "secondTableName": "tms_ltfrb_status",
+        "secondTableName": "tms_compre_insurance",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
       },
       {
         "firstFieldNames": [
-          "tpl_id"
+          "provider_id"
         ],
-        "firstTableName": "tms_bulk_new",
+        "firstTableName": "tms_asset_document",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
@@ -177,30 +222,30 @@
       },
       {
         "firstFieldNames": [
-          "compre_id"
+          "provider_id"
         ],
-        "firstTableName": "tms_bulk_new",
-        "firstSchemaName": "public",
-        "firstRelation": "*",
-        "secondFieldNames": [
-          "compre_id"
-        ],
-        "secondTableName": "tms_compre_insurance",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "bank_id"
-        ],
-        "firstTableName": "tms_bulk_new",
+        "firstTableName": "tms_asset_document",
         "firstSchemaName": "public",
         "firstRelation": "*",
         "secondFieldNames": [
           "bank_id"
         ],
         "secondTableName": "tms_bank",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "provider_id"
+        ],
+        "firstTableName": "tms_asset_document",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "status_id"
+        ],
+        "secondTableName": "tms_ltfrb_status",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []

@@ -666,3 +666,14 @@ VALUES
 (3, 'Triple Axle', 12, '12 wheels 3 axles'),
 (4, 'Multi Axle',  16, '16 wheels 4 axles'),
 (5, '5-Axle',      20, '20 wheels 5 axles');
+
+CREATE TABLE tms_asset_document (
+    doc_id INT IDENTITY(1,1) PRIMARY KEY,
+    asset_reference NVARCHAR(50) NOT NULL, -- Holds Head, Body Number, or Trailer ID
+    asset_type VARCHAR(20) NOT NULL,        -- 'TRUCK', 'BULK', or 'FLATBED'
+    doc_category VARCHAR(20) NOT NULL,      -- 'LTFRB', 'TPL', 'COMPRE', or 'BANK'
+    provider_id INT NULL,                   -- Holds the FK lookup ID to your status/bank/insurance tables
+    document_number NVARCHAR(100) NULL,     -- Policy/Certificate number
+    expiry_or_due_date DATETIME NULL,       -- Unified expiration/due date
+    created_on DATETIME DEFAULT GETDATE()
+);

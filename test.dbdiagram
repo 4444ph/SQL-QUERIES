@@ -1,0 +1,73 @@
+{
+  "version": "2.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "tablePositions": [
+      {
+        "name": "tms_asset_document",
+        "schemaName": "public",
+        "x": 513.26904296875,
+        "y": 12
+      },
+      {
+        "name": "tms_truck_new",
+        "schemaName": "public",
+        "x": 12,
+        "y": 12
+      },
+      {
+        "name": "tms_flatbed_new",
+        "schemaName": "public",
+        "x": 12,
+        "y": 442
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": [
+      {
+        "firstFieldNames": [
+          "asset_reference"
+        ],
+        "firstTableName": "tms_asset_document",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "head"
+        ],
+        "secondTableName": "tms_truck_new",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "asset_reference"
+        ],
+        "firstTableName": "tms_asset_document",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "trailer_id"
+        ],
+        "secondTableName": "tms_flatbed_new",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": [
+          {
+            "x": 388.355224609375,
+            "y": 92
+          },
+          {
+            "x": 388.355224609375,
+            "y": 490
+          }
+        ]
+      }
+    ]
+  },
+  "views": {}
+}

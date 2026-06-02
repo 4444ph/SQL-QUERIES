@@ -1,0 +1,118 @@
+// 1. NEW CENTRALIZED ASSET COMPLIANCE & DOCUMENT TABLE
+Table tms_asset_document {
+  doc_id INT [pk, increment]
+  asset_reference NVARCHAR(50) [note: 'Holds Head, Body Number, or Trailer ID']
+  asset_type VARCHAR(20) [note: 'TRUCK, BULK, or FLATBED']
+  doc_category VARCHAR(20) [note: 'LTFRB, TPL, COMPRE, or BANK']
+  provider_id INT [note: 'Conditional FK matching doc_category']
+  document_number NVARCHAR(100)
+  expiry_or_due_date DATETIME
+  deductible_base DECIMAL(18,2)
+  deductible DECIMAL(18,2)
+  sum_insured_base DECIMAL(18,2)
+  sum_insured DECIMAL(18,2)
+  premium_amt_base DECIMAL(18,2)
+  premium_amt DECIMAL(18,2)
+  created_on DATETIME
+
+}
+
+// 2. SLIMMED DOWN TRUCK ASSET TABLE
+Table tms_truck_new {
+  head NVARCHAR(50) [pk]
+  row_id INT
+  brand_id INT
+  model NVARCHAR(50)
+  year_model INT
+  plate_no NVARCHAR(50)
+  plate_ending_number INT
+  bu_ID INT
+  a_ID INT
+  chassis_no NVARCHAR(100)
+  engine_number NVARCHAR(100)
+  truck_type_id INT
+  status_Id INT
+  classification_Id INT
+  conduction_number NVARCHAR(50)
+  remarks NVARCHAR(MAX)
+  mv_file_no NVARCHAR(50)
+  orcr_name NVARCHAR(100)
+  cr_date DATETIME
+  or_expiry_date DATETIME
+  stencil NVARCHAR(50)
+  created_on DATETIME
+  modified_on DATETIME
+}
+
+// 3. COMPLIANCE & DOCUMENT PROVIDER LOOKUPS
+Table tms_compre_insurance {
+  compre_Id int [pk, not null]
+  compre_name nvarchar(50)
+}
+
+Table tms_tpl_insurance {
+  tpl_id int [pk, not null]
+  tpl_name nvarchar(50)
+}
+
+Table tms_bank {
+  bank_id int [pk, not null]
+  bank_name nvarchar(50)
+}
+
+Table tms_ltfrb_status {
+  status_id int [pk, not null]
+  status_name nvarchar(150)
+}
+
+// 4. CORE TRUCK ATTRIBUTE LOOKUPS
+Table tms_truck_brand {
+  brand_id int [pk, not null]
+  brand_name nvarchar(100) [not null]
+}
+
+Table tms_truck_type {
+  id int [pk, not null]
+  truck_type nvarchar(100) [not null]
+}
+
+Table tms_truck_class {
+  class_ID int [pk, not null]
+  class_name nvarchar(100) [not null]
+}
+
+Table tms_bu {
+  bu_ID int [pk, not null]
+  business_unit char(15)
+}
+
+Table tms_assignment {
+  a_ID int [pk, not null]
+  assignment varchar(20) [not null]
+}
+
+Table tms_unit_status {
+  StatusId int [pk, not null]
+  status_name nvarchar(50) [not null]
+}
+
+
+
+// RELATIONSHIPS & VISUAL MAPS
+
+// Polymorphic Link: Links document table back to core asset identification primary key
+Ref: tms_asset_document.asset_reference > tms_truck_new.head
+
+// Document Conditional Lookups (Maps your COALESCE logic visually)
+Ref: tms_asset_document.provider_id > tms_compre_insurance.compre_Id
+Ref: tms_asset_document.provider_id > tms_tpl_insurance.tpl_id
+Ref: tms_asset_document.provider_id > tms_bank.bank_id
+Ref: tms_asset_document.provider_id > tms_ltfrb_status.status_id
+
+// Standard Truck Core Relationships
+Ref: tms_truck_new.brand_id > tms_truck_brand.brand_id
+Ref: tms_truck_new.truck_type_id > tms_truck_type.id
+Ref: tms_truck_new.classification_Id > tms_truck_class.class_ID
+Ref: tms_truck_new.bu_ID > tms_bu.bu_ID
+Ref: tms_truck_new.a_ID > tms_assignment.a_ID
+Ref: tms_truck_new.status_Id > tms_unit_status.StatusId

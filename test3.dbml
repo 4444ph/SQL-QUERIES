@@ -1,0 +1,127 @@
+Table tms_flatbed_new {
+  trailer_id varchar [pk]
+  plate_number varchar
+  plate_ending_number int
+  chassis_number varchar
+  trailer_type varchar
+  axle_type varchar
+  year_model int
+  bu_ID int
+  fleet_group varchar
+  a_ID int
+  assigned varchar
+  idle varchar
+  status_code int
+  status varchar
+  remarks varchar
+  deploy varchar
+  has_stencil varchar
+  mv_file_number varchar
+  or_cr_name varchar
+  or_date datetime
+  cr_date datetime
+  state_code int
+  created_on datetime
+  modified_on datetime
+  from_tbl varchar
+}
+
+Table tms_bulk_new {
+  body_number varchar [pk]
+  plate_number varchar
+  plate_ending_number int
+  chassis_number varchar
+  trailer_type varchar
+  axle_type varchar
+  year_model int
+  bu_ID int
+  fleet_group varchar
+  a_ID int
+  assigned varchar
+  idle varchar
+  status_code int
+  status varchar
+  remarks varchar
+  deployed varchar
+  has_stencil varchar
+  mv_file_number varchar
+  or_cr_name varchar
+  or_date datetime
+  cr_date datetime
+  state_code int
+  modified_on datetime
+  created_on datetime
+  from_tbl varchar
+}
+
+Table tms_asset_document {
+  doc_id INT [pk, increment]
+  asset_reference NVARCHAR(50) [note: 'Holds Head, Body Number, or Trailer ID']
+  asset_type VARCHAR(20) [note: 'TRUCK, BULK, or FLATBED']
+  doc_category VARCHAR(20) [note: 'LTFRB, TPL, COMPRE, or BANK']
+  provider_id INT [note: 'Conditional FK matching doc_category']
+  document_number NVARCHAR(100)
+  expiry_or_due_date DATETIME
+  deductible_base DECIMAL(18,2)
+  deductible DECIMAL(18,2)
+  sum_insured_base DECIMAL(18,2)
+  sum_insured DECIMAL(18,2)
+  premium_amt_base DECIMAL(18,2)
+  premium_amt DECIMAL(18,2)
+  created_on DATETIME
+
+}
+
+// 3. COMPLIANCE & DOCUMENT PROVIDER LOOKUPS
+Table tms_compre_insurance {
+  compre_Id int [pk, not null]
+  compre_name nvarchar(50)
+}
+
+Table tms_tpl_insurance {
+  tpl_id int [pk, not null]
+  tpl_name nvarchar(50)
+}
+
+Table tms_bank {
+  bank_id int [pk, not null]
+  bank_name nvarchar(50)
+}
+
+Table tms_ltfrb_status {
+  status_id int [pk, not null]
+  status_name nvarchar(150)
+}
+
+Table tms_bu {
+  bu_ID int [pk, not null]
+  business_unit char(15)
+}
+
+Table tms_assignment {
+  a_ID int [pk, not null]
+  assignment varchar(20) [not null]
+}
+
+Table tms_unit_status {
+  StatusId int [pk, not null]
+  status_name nvarchar(50) [not null]
+}
+
+Ref: tms_flatbed_new.bu_ID > tms_bu.bu_ID
+Ref: tms_bulk_new.bu_ID > tms_bu.bu_ID
+Ref: tms_assignment.a_ID < tms_flatbed_new.a_ID
+Ref: tms_assignment.a_ID < tms_bulk_new.a_ID
+Ref: tms_unit_status.StatusId < tms_flatbed_new.status_code
+Ref: tms_unit_status.StatusId < tms_bulk_new.status_code
+
+Ref: tms_asset_document.provider_id > tms_compre_insurance.compre_Id
+Ref: tms_asset_document.provider_id > tms_tpl_insurance.tpl_id
+Ref: tms_asset_document.provider_id > tms_bank.bank_id
+Ref: tms_asset_document.provider_id > tms_ltfrb_status.status_id
+
+
+Ref: tms_asset_document.asset_reference > tms_flatbed_new.trailer_id
+Ref: tms_asset_document.asset_reference > tms_bulk_new.body_number
+
+

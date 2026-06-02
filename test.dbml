@@ -1,0 +1,48 @@
+// 1. THE NEW CENTRALIZED COMPLIANCE & DOCUMENT TABLE
+Table tms_asset_document {
+  doc_id INT [pk]
+  asset_reference NVARCHAR(50) [note: 'Links to head, body_number, or trailer_id']
+  asset_type VARCHAR(20) [note: 'Enter: TRUCK, BULK, or FLATBED']
+  doc_category VARCHAR(20) [note: 'Enter: LTFRB, TPL, COMPRE, or BANK']
+  provider_name NVARCHAR(100) [note: 'e.g., BDO, Malayan, Active (or link to a provider ID)']
+  account_or_policy_no NVARCHAR(100)
+  expiry_or_due_date DATETIME
+  status_code INT [note: '1 for Active, 0 for Expired/Replaced']
+  created_on DATETIME
+  modified_by NVARCHAR(50)
+}
+
+// 2. SLIMMED-DOWN TRUCK TABLE (Example)
+Table tms_truck_new {
+  head NVARCHAR(50) [pk]
+  row_id INT
+  brand NVARCHAR(50)
+  model NVARCHAR(50)
+  year_model INT
+  plate_no NVARCHAR(50)
+  bu_ID INT
+  a_ID INT
+  chassis_no NVARCHAR(100)
+  engine_number NVARCHAR(100)
+  status_Id INT
+  // ALL 12 insurance, bank, and LTFRB columns are now GONE.
+}
+
+// 3. SLIMMED-DOWN FLATBED TABLE (Example)
+Table tms_flatbed_new {
+  trailer_id nvarchar(30) [pk] 
+  plate_number nvarchar(30)
+  chassis_number nvarchar(30)
+  trailer_type varchar(1)
+  axle_type nvarchar(max)
+  bu_ID int
+  a_ID INT
+  status int
+  // ALL insurance, bank, and LTFRB columns are now GONE.
+}
+
+// VIRTUAL RELATIONSHIPS
+// Because asset_reference can link to three different tables, it is a "Polymorphic" link.
+// dbdiagram handles this best visually by drawing refs to all three.
+Ref: tms_asset_document.asset_reference > tms_truck_new.head
+Ref: tms_asset_document.asset_reference > tms_flatbed_new.trailer_id
