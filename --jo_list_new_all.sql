@@ -289,3 +289,36 @@ FROM (
     FROM [SHAREPOINT_DATA].[dbo].[jr_list]
 ) AS CombinedJRs;
 GO
+
+
+
+WITH test as (
+SELECT 
+jr.JRNumber as jr_number, 
+ur.Id as ur_id, 
+jo.Jonumber as jo_number
+
+FROM [WILLOWTestDB].[dbo].[vw_jr_list_all_union] JR
+
+left join [SHAREPOINT_DATA].[dbo].[ur_list] ur
+	on ur.Jrnumber = JR.JRNumber
+
+left join dbo.jo_list jo
+	ON jo.Jrn = ur.Jrnumber
+
+WHERE jo.Jonumber is null
+	AND ur.id IS NOT NULL	
+)
+
+select 
+COALESCE(t.jr_number, jo.jr_number) AS jr_number,
+    
+    -- 2. Coalesce UR IDs (with 'UR-' prefixed to table t's ID)
+    COALESCE('UR-' + CAST(t.ur_id AS NVARCHAR(50)), CAST(jo.ur_id AS NVARCHAR(50))) AS ur_id,
+    
+    -- 3. Coalesce JO Numbers
+    COALESCE(t.jo_number, jo.jo_number) AS jo_number
+from test t
+
+full outer join MAINTENANCE_APP_MASTERDATA.dbo.jo_list_all_new jo
+	on jo.jr_number = t.jr_number
